@@ -1,11 +1,12 @@
-Embryo = Ember.Application.create();
+Embryo = Ember.Application.create({
+  LOG_TRANSITIONS: true
+});
 
 Embryo.Router.map(function() {
   this.resource('users', function() {
     this.route('new');
-    this.resource('show', { path: ':user_id' }, function() {
-      this.route('edit');
-    })
+    this.route('show', { path: ':user_id' });
+    this.route('edit', { path: ':user_id/edit' });
   });
 });
 
@@ -36,5 +37,17 @@ Embryo.User.FIXTURES = [
 Embryo.UsersRoute = Ember.Route.extend({
   model: function() {
     return Embryo.User.find();
+  }
+});
+
+Embryo.UsersShowRoute = Ember.Route.extend({
+  model: function(params) {
+    return Embryo.User.find(params.user_id);
+  }
+});
+
+Embryo.UsersEditRoute = Ember.Route.extend({
+  model: function(params) {
+    return Embryo.User.find(params.user_id);
   }
 });
